@@ -1,0 +1,29 @@
+{
+  "name": "projectmanagement",
+  "version": "1.0.0",
+  "description": "A full stack project management app built using a PERN stack as part of the final project for Codecademy's Full Stack Engineer course.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start:backend": "cd backend && npm run start",
+    "dev:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend && npm run preview",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "npx concurrently --kill-others-on-fail \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start": "npx concurrently --kill-others-on-fail \"npm run start:backend\" \"npm run start:frontend\"",
+    "build": "cd frontend && npm run build"
+  },
+  "keywords": [
+    "project-management",
+    "codecademy",
+    "tasks",
+    "njtd"
+  ],
+  "author": "Nathan John - NJTD",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
