@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Team = require('../models/teamModel');
 
+
+  // Return all teams
+  // Return one team by id
+  // Create new team
+  // Update team by id
+  // Delete team by id
+
 router.get('/team/all', async (req, res) => {
   try {
     const allTeams = await Team.all();
