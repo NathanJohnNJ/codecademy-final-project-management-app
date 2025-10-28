@@ -10,20 +10,19 @@ const taskRouter = require("./src/routes/tasks");
 const projectRouter = require("./src/routes/projects");
 const authRouter = require('./src/routes/auth');
 const authMiddleware = require('./src/middleware/auth');
-const setupDatabase = require('./src/db/dbSetup')
+const setupDatabase = require('./src/db/dbSetup').setupDatabase;
+app.use(cors());
+app.use(express.json());
+setupDatabase();
+
+app.use('/api/auth', authRouter);
+
+app.use('/api/users', authMiddleware, usersRouter);
+app.use('/api/projects', authMiddleware, projectRouter);
+app.use('/api/tasks', authMiddleware, taskRouter);
+app.use('/api/teams', authMiddleware, teamRouter);
 
 try{
-  app.use(cors());
-  app.use(express.json());
-  await setupDatabase();
-  
-  app.use('/api/auth', authRouter);
-
-  app.use('/api/users', authMiddleware, usersRouter);
-  app.use('/api/projects', authMiddleware, projectRouter);
-  app.use('/api/tasks', authMiddleware, taskRouter);
-  app.use('/api/teams', authMiddleware, teamRouter);
-
   app.get('/', async (req, res) => {
     res.send('Project Manager backend running'
   )});
