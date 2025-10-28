@@ -3,7 +3,7 @@ const router = express.Router();
 const Project = require('../models/projectModel');
 
 //  Get all projects
-router.get('/api/projects/all', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
     const allProjects = await Project.allProjects();
     res.status(201).json({message: "All projects found", projects: allProjects});
@@ -14,7 +14,7 @@ router.get('/api/projects/all', async (req, res) => {
 });
 
 // Gett all projects for given user
-router.get('/api/projects/:user_id/all', async (req, res) => {
+router.get('/:user_id/all', async (req, res) => {
   try {
     const user_id = req.params.user_id;
     const allUserProjects = await Project.allUserProjects(user_id);
@@ -26,7 +26,7 @@ router.get('/api/projects/:user_id/all', async (req, res) => {
 });
 
 // Gett all projects for given team
-router.get('/api/projects/:team_id/all', async (req, res) => {
+router.get('/:team_id/all', async (req, res) => {
   try {
     const team_id = req.params.team_id;
     const allTeamProjects = await Project.allUserProjects(team_id);
@@ -38,7 +38,7 @@ router.get('/api/projects/:team_id/all', async (req, res) => {
 });
 
 // Get project by id
-router.get('/api/projects/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ error: 'Not found' });
@@ -50,7 +50,7 @@ router.get('/api/projects/:id', async (req, res) => {
 });
 
 // Add project
-router.post('/api/projects/add', async (req, res) => {
+router.post('/add', async (req, res) => {
   try {
     const newProject = await Project.create({
         project: req.body.project
@@ -64,7 +64,7 @@ router.post('/api/projects/add', async (req, res) => {
 });
 
 // Update project by id
-router.put('/api/projects/:id/update', async (req, res) => {
+router.put('/:id/update', async (req, res) => {
   try {
     const id = req.params.id;
     const updates = req.body;

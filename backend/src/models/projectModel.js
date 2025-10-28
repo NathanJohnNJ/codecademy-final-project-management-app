@@ -29,7 +29,7 @@ const Project = {
   async create(newProject) {
     const { id, title, notes, priority, completed, due_date, created_date, task_ids, team_ids, user_ids, project_image } = newProject;
     const res = await db.query(
-      'INSERT INTO projects(id, title, notes, priority, completed, due_date, created_date, task_ids, team_ids, user_ids, project_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, title, notes, priority, completed, due_date, created_date, task_ids, team_ids, user_ids, project_image',
+      'INSERT INTO projects(id, title, notes, priority, completed, due_date, created_date, task_ids, team_ids, user_ids, project_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id, title, notes, priority, completed, due_date, created_date, task_ids, team_ids, user_ids, project_image',
       [id, title, notes, priority, completed, due_date, created_date, task_ids, team_ids, user_ids, project_image]
     );
     return res.rows[0];

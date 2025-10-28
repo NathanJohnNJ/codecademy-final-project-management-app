@@ -15,6 +15,7 @@ const setupDatabase = require('./src/db/dbSetup')
 try{
   app.use(cors());
   app.use(express.json());
+  await setupDatabase();
   
   app.use('/api/auth', authRouter);
 
@@ -24,7 +25,6 @@ try{
   app.use('/api/teams', authMiddleware, teamRouter);
 
   app.get('/', async (req, res) => {
-    await setupDatabase();
     res.send('Project Manager backend running'
   )});
 
