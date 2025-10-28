@@ -2,11 +2,16 @@ const db = require('../db/connection');
 
 async function setupDatabase(){
   try {
-    await db.query('CREATE DATABASE IF NOT EXISTS projectmanagementdb');
-    await db.query('DROP TABLE IF EXISTS tasks;');
-    await db.query('DROP TABLE IF EXISTS users;');
-    await db.query('DROP TABLE IF EXISTS teams;');
-    await db.query('DROP TABLE IF EXISTS projects;');
+  // PostgreSQL does not support 'CREATE DATABASE IF NOT EXISTS'.
+  // If you need to create the DB programmatically, run the CREATE DATABASE
+  // statement separately and handle the duplicate_database error (SQLSTATE '42P04').
+  // Skipping DB creation here; assume the database already exists.
+    // await db.query('DROP TABLE IF EXISTS tasks;');
+    // await db.query('DROP TABLE IF EXISTS users;');
+    // await db.query('DROP TABLE IF EXISTS teams;');
+    // await db.query('DROP TABLE IF EXISTS projects;');
+    // await db.query('DROP TYPE priority;');
+    // await db.query('CREATE TYPE priority AS ENUM(\'high\', \'medium\', \'low\')');
     await db.query('CREATE TABLE IF NOT EXISTS tasks ( id serial NOT NULL, title character varying(50) NOT NULL, notes text, priority priority, completed boolean NOT NULL DEFAULT false, due_date date, created_date date NOT NULL, project_id integer, team_id integer, user_ids integer[], CONSTRAINT tasksd_pkey PRIMARY KEY (id))');
     await db.query('CREATE TABLE IF NOT EXISTS projects (id serial NOT NULL, title character varying(50) NOT NULL, notes text, completed boolean NOT NULL DEFAULT false, due_date date, created_date date NOT NULL, task_ids integer[], team_ids integer[], user_ids integer[], priority priority, project_image integer NOT NULL DEFAULT 1, CONSTRAINT projects_pkey PRIMARY KEY (id))');
     await db.query('CREATE TABLE IF NOT EXISTS users (id serial NOT NULL, user_name character varying(50) NOT NULL, email character varying(100) NOT NULL, password_hash character varying(150) NOT NULL, tasks integer[], teams integer[], projects integer[], profile_image integer DEFAULT 1, CONSTRAINT users_pkey PRIMARY KEY (id))');
