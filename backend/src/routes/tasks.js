@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Task = require('../models/taskModel');
 
-
-
 // get all tasks for user
-router.get('/task/:userid/all', async (req, res) => {
+router.get('/:userid/all', async (req, res) => {
   try {
     const allUserTasks = await Task.allUserTasks(req.params.userid);
     res.status(201).json({message: `All tasks found for userID: ${req.params.userid}`, tasks: allUserTasks});
@@ -16,7 +14,7 @@ router.get('/task/:userid/all', async (req, res) => {
 });
 
 // get all tasks for project
-router.get('/task/:projectid/all', async (req, res) => {
+router.get('/:projectid/all', async (req, res) => {
   try {
     const allProjectTasks = await Task.allProjectTasks(req.params.projectid);
     res.status(201).json({message: `All tasks found for projectID: ${req.params.projectid}`, tasks: allProjectTasks});
@@ -27,7 +25,7 @@ router.get('/task/:projectid/all', async (req, res) => {
 });
 
 // get all tasks for team
-router.get('/task/:teamid/all', async (req, res) => {
+router.get('/:teamid/all', async (req, res) => {
   try {
     const allTeamTasks = await Task.allTeamTasks(req.params.teamid);
     res.status(201).json({message: `All tasks found for teamID: ${req.params.teamid}`, tasks: allTeamTasks});
@@ -38,7 +36,7 @@ router.get('/task/:teamid/all', async (req, res) => {
 });
 
 // get task by id
-router.get('/task/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ error: 'Not found' });
@@ -50,7 +48,7 @@ router.get('/task/:id', async (req, res) => {
 });
 
 // create new task
-router.post('/task/add', async (req, res) => {
+router.post('/add', async (req, res) => {
   try {
     const newTask = await Task.create({
         task: req.body.task
@@ -64,22 +62,11 @@ router.post('/task/add', async (req, res) => {
 });
 
 // Update task by id
-router.put('/task/:id/update', async (req, res) => {
+router.put('/:id/update', async (req, res) => {
   try {
-    const {columnsToUpdate, newValues} = req.body;
-    let updateString = '';
-      columnsToUpdate.map((column, i) => {
-        updateString += `${column} = ${newValues[i]}`
-        if (i = columnsToUpdate.length - 1){
-          updateString += " ";
-        } else {
-          updateString += ", "
-        }
-      })
-    const updatedTask = await Task.update({
-      id: req.body.id,
-      updateString: updateString
-    });
+    const id = req.params.id;
+    const updates = req.body;
+    const updatedTask = await Task.update({ id, updates });
     res.status(201).json({
       message: `Task successfully updated.`, task: updatedTask});
   } catch (err) {
@@ -89,7 +76,7 @@ router.put('/task/:id/update', async (req, res) => {
 });
 
   // Delete task by id
-router.delete('/task/:id/delete', async (req, res) => {
+router.delete('/:id/delete', async (req, res) => {
   try {
     await Task.delete(req.params.id);
     res.json({ success: true });

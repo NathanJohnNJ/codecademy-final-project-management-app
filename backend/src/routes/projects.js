@@ -3,7 +3,7 @@ const router = express.Router();
 const Project = require('../models/projectModel');
 
 //  Get all projects
-router.get('/project/all', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
     const allProjects = await Project.allProjects();
     res.status(201).json({message: "All projects found", projects: allProjects});
@@ -14,7 +14,7 @@ router.get('/project/all', async (req, res) => {
 });
 
 // Gett all projects for given user
-router.get('/project/:user_id/all', async (req, res) => {
+router.get('/:user_id/all', async (req, res) => {
   try {
     const user_id = req.params.user_id;
     const allUserProjects = await Project.allUserProjects(user_id);
@@ -26,7 +26,7 @@ router.get('/project/:user_id/all', async (req, res) => {
 });
 
 // Gett all projects for given team
-router.get('/project/:team_id/all', async (req, res) => {
+router.get('/:team_id/all', async (req, res) => {
   try {
     const team_id = req.params.team_id;
     const allTeamProjects = await Project.allUserProjects(team_id);
@@ -38,7 +38,7 @@ router.get('/project/:team_id/all', async (req, res) => {
 });
 
 // Get project by id
-router.get('/project/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ error: 'Not found' });
@@ -50,7 +50,7 @@ router.get('/project/:id', async (req, res) => {
 });
 
 // Add project
-router.post('/project/add', async (req, res) => {
+router.post('/add', async (req, res) => {
   try {
     const newProject = await Project.create({
         project: req.body.project
@@ -64,22 +64,11 @@ router.post('/project/add', async (req, res) => {
 });
 
 // Update project by id
-router.put('/project/:id/update', async (req, res) => {
+router.put('/:id/update', async (req, res) => {
   try {
-    const {columnsToUpdate, newValues} = req.body;
-    let updateString = '';
-      columnsToUpdate.map((column, i) => {
-        updateString += `${column} = ${newValues[i]}`
-        if (i = columnsToUpdate.length - 1){
-          updateString += " ";
-        } else {
-          updateString += ", "
-        }
-      })
-    const updatedProject = await Project.update({
-      id: req.body.id,
-      updateString: updateString
-    });
+    const id = req.params.id;
+    const updates = req.body;
+    const updatedProject = await Project.update({ id, updates });
     res.status(201).json({
       message: `Project successfully updated.`, project: updatedProject});
   } catch (err) {
@@ -89,7 +78,7 @@ router.put('/project/:id/update', async (req, res) => {
 });
 
 // Delete project by id
-router.delete('/:id', async (req, res) => {
+router.delete('/api/:id', async (req, res) => {
   try {
     await Project.delete(req.params.id);
     res.json({ success: true });

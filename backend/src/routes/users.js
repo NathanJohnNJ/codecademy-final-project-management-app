@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 
- 
-
   // Return all users
-router.get('/user/all', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
     const allUsers = await User.all();
     res.status(201).json({message: "All users found", users: allUsers});
@@ -16,7 +14,7 @@ router.get('/user/all', async (req, res) => {
 });
 
   // Return one user by id
-router.get('/user/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user){
@@ -30,7 +28,7 @@ router.get('/user/:id', async (req, res) => {
 });
 
   // Create new user
-router.post('/user/add', async (req, res) => {
+router.post('/add', async (req, res) => {
   try {
     const newUser = await User.create({
         user: req.body.user
@@ -44,22 +42,11 @@ router.post('/user/add', async (req, res) => {
 });
 
  // Update user by id
-router.put('/user/:id/update', async (req, res) => {
+router.put('/:id/update', async (req, res) => {
   try {
-    const {columnsToUpdate, newValues} = req.body;
-    let updateString = '';
-      columnsToUpdate.map((column, i) => {
-        updateString += `${column} = ${newValues[i]}`
-        if (i = columnsToUpdate.length - 1){
-          updateString += " ";
-        } else {
-          updateString += ", "
-        }
-      })
-    const updatedUser = await User.update({
-      id: req.body.id,
-      updateString: updateString
-    });
+    const id = req.params.id;
+    const updates = req.body;
+    const updatedUser = await User.update({ id, updates });
     res.status(201).json({
       message: `User successfully updated.`, user: updatedUser});
   } catch (err) {
@@ -69,7 +56,7 @@ router.put('/user/:id/update', async (req, res) => {
 });
 
   // delete user by id
-router.delete('/user/:id/delete', async (req, res) => {
+router.delete('/:id/delete', async (req, res) => {
   try {
     await User.delete(req.params.id);
     res.json({ success: true });
