@@ -1,10 +1,10 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const db = require('../db/connection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Register
 router.post('/register', async (req, res) => {
@@ -17,7 +17,7 @@ router.post('/register', async (req, res) => {
 
     const hashed = await bcrypt.hash(password, 10);
     const result = await db.query(
-      'INSERT INTO users(name, email, password_hash) VALUES($1, $2, $3) RETURNING id, name, email',
+      'INSERT INTO users(user_name, email, password_hash, tasks, teams, projects) VALUES($1, $2, $3, [], [], []) RETURNING id, user_name, email, tasks, teams, projects',
       [name, email, hashed]
     );
 
@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Missing fields' });
 
-    const result = await db.query('SELECT id, name, email, password_hash FROM users WHERE email=$1', [email]);
+    const result = await db.query('SELECT id, user_name, email, password_hash, tasks, teams, projects FROM users WHERE email=$1', [email]);
     const user = result.rows[0];
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 

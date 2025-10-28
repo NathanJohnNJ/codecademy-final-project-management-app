@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Auth from './Auth'
 
@@ -38,7 +38,7 @@ export default function App() {
   async function addUser(e) {
     e.preventDefault()
     try {
-      const res = await axios.post(`${API_ROOT}/api/users`, { name, email }, { headers: authHeaders() })
+      const res = await axios.post(`${API_ROOT}/api/users/add`, { name, email }, { headers: authHeaders() })
       setUsers(prev => [...prev, res.data])
       setName('')
       setEmail('')

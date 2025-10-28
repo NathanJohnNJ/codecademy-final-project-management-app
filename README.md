@@ -11,11 +11,11 @@ A project management tool where users can create, update, and track the progress
 ## Main areas of consideration
 
 - [ ] Branding/Frontend - Vite
-- [ ] Database/Backend
+- [x] Database/Backend
 - [ ] Managing state - Redux?
-- [ ] Express Server
+- [x] Express Server
 - [ ] Swagger docs
-- [ ] API routes
+- [x] API routes
 - [ ] Authentication allowing saving of sessions
 - [ ] AI integration
 
@@ -80,6 +80,5 @@ A project management tool where users can create, update, and track the progress
 
 ### Development notes
 
-- Copy `backend/.env.example` to `backend/.env` and set your `DATABASE_URL`.
-- Create the `users` table (see `backend/README.md`).
-- You can run the backend on port 5000 and the frontend on 5173. In development set `VITE_API_URL` in `frontend/.env` to `http://localhost:5000` if needed.
+- Copy `backend/.env.example` to `backend/.env` and set your `POSTGRES_DATABASE_URL`.
+- You can run the backend on port 5000 and the frontend on 5173. In development set `VITE_API_URL` in `frontend/.env` to `http://localhost:5500` if needed.
