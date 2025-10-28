@@ -22,7 +22,7 @@
     "njtd"
   ],
   "author": "Nathan John - NJTD",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "concurrently": "^9.2.1"
   }
